@@ -6,7 +6,9 @@ command!(c, g, "create_text_channel", "propose to create a text channel", legacy
     [Bool, "nsfw", "whether the channel is nsfw"]
 )) do ctx, name::String, topic::String, position::Int, parent::String, nsfw::Bool
     global c, votemap
-    create_vote(CreateTextChannelVoteAction(name, topic, position, parse(Ekztazy.Snowflake, parent), nsfw))
+    pa = parse(Ekztazy.Snowflake, parent) 
+    pa = pa == 0 ? missing : pa
+    create_vote(CreateTextChannelVoteAction(name, topic, position, pa, nsfw))
     Ekztazy.reply(c, ctx, content="Succesfully created vote proposal.")
 end
 
@@ -16,7 +18,9 @@ command!(c, g, "create_voice_channel", "propose to create a voice channel", lega
     [String, "parent", "the category for this channel, 0 if none"],
 )) do ctx, name::String, position::Int, parent::String
     global c, votemap
-    create_vote(CreateVoiceChannelVoteAction(name, position, parse(Ekztazy.Snowflake, parent)))
+    pa = parse(Ekztazy.Snowflake, parent) 
+    pa = pa == 0 ? missing : pa
+    create_vote(CreateVoiceChannelVoteAction(name, position, pa))
     Ekztazy.reply(c, ctx, content="Succesfully created vote proposal.")
 end
 

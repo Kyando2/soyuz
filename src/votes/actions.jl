@@ -17,7 +17,7 @@ CreateCategoryChannelVoteAction(name::String, position::Int) = VoteAction(va_cre
 
 function perform(a::VoteAction)
     if a.type == va_create_channel
-        if !(ismissing(a)) && a.parent != 0 
+        if !(ismissing(a))
             Ekztazy.create_guild_channel(c, parse(Int, g), name=a.name, type=a.channel_type, topic=a.topic, position=a.position, parent_id=a.parent, nsfw=a.nsfw)
         else 
             Ekztazy.create_guild_channel(c, parse(Int, g), name=a.name, type=a.channel_type, topic=a.topic, position=a.position, nsfw=a.nsfw)
