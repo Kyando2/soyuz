@@ -8,15 +8,8 @@ c = Client()
 
 g = ENV["GUILD_ID"]
 
-@enum VoteActionType begin
-    va_create_channel = 1
-end
+include("votes/actions.jl")
 
-struct VoteAction 
-    type::VoteActionType
-    name::Ekztazy.Nullable{String}
-end
-CreateChannelVoteAction(name::String) = VoteAction(va_create_channel, name)
 mutable struct Vote 
     alr_vo::Vector{Ekztazy.Snowflake}
     value::Int
@@ -96,18 +89,6 @@ include("votes/channel.jl")
 
 on_ready!(c) do ctx
     print("Logged in!")
-end
-
-function perform(a::VoteAction)
-    if a.type == va_create_channel
-        Ekztazy.create_guild_channel(c, parse(Int, g), name=a.name)
-    end
-end
-
-function msg(a::VoteAction)
-    if a.type == va_create_channel
-        return "Proposal to create channel called $(a.name)."
-    end
 end
 
 start(c)
