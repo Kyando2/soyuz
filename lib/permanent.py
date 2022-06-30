@@ -1,11 +1,13 @@
 import json
-from re import A
 
-from sympy import true
 """
 Pattern for permanent objects
+This object is given three things
+f: a function to serialize its structure
+rf: a function to deserialize its structure
+k: the name of a file to save data in (in the data folder)
 """
-class PermanentObject(object):
+class PermanentContext(object):
     def __init__(self, f, rf, k):
         self.key = k if k.startswith("data/") else "data/{}".format(k)
         self.f = f
@@ -28,7 +30,10 @@ class PermanentObject(object):
     def __getattr__(self, name):
         return self.structure[name]
 
-class PermanentJsonContext(PermanentObject): 
+"""
+Implementation of the PermanentContext class for json.
+"""
+class PermanentJsonContext(PermanentContext): 
     def __init__(self, key):
         super().__init__(json.dumps, json.loads, "{}.json".format(key))
     
