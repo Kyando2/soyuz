@@ -33,6 +33,16 @@ class PermanentContext(object):
     def __setitem__(self, name, value):
         self.__setattr__(name, value)
 
+    def __getitem__(self, name):
+        self.__getattr__(name)
+    
+    def __contains__(self, other):
+        return other in self.structure.keys()
+
+    def update(self):
+        with open(self.key, "w", encoding="utf-8") as f:
+            f.write(self.f(self.structure))
+
 """
 Implementation of the PermanentContext class for json.
 """
