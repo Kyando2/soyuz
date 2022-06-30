@@ -29,6 +29,9 @@ class PermanentContext(object):
 
     def __getattr__(self, name):
         return self.structure[name]
+    
+    def __setitem__(self, name, value):
+        self.__setattr__(name, value)
 
 """
 Implementation of the PermanentContext class for json.
