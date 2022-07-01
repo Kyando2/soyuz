@@ -24,8 +24,7 @@ class PermanentContext(object):
         else:
             if self.is_open == True:
                 self.structure[name] = value
-                with open(self.key, "w", encoding="utf-8") as f:
-                    f.write(self.f(self.structure))
+                self.update()
 
     def __getattr__(self, name):
         return self.structure[name]

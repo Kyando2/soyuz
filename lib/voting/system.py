@@ -19,9 +19,9 @@ ACTION_DICT = {
     
 }
 
-def action_factory(id, dic):
+def action_factory(id, **kwargs):
     return ACTION_DICT[id](
-        **dic
+        **kwargs
     )
 
 class Vote(discord.ui.View):
@@ -62,8 +62,8 @@ class Vote(discord.ui.View):
         pj[self.id]["a_v"].append(id)
         pj.update()
 
-def vote_factory(action: Action, count, threshold, message_id):
-    id = uuid.uuid4()
+def vote_factory(action: Action, count, threshold, message_id, id=None):
+    id = id if id != None else uuid.uuid4()
     class Temp(Vote):
         def __init__(self, action: Action, count, threshold, message_id):
             super().__init__(action, count, threshold, message_id, id)
