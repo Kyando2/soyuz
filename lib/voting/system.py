@@ -1,8 +1,8 @@
 import discord
 import uuid
 
-from sympy import Permanent 
 from lib.permanent import PermanentJsonContext
+
 
 class Action(object):
     def __init__(self):
@@ -11,7 +11,18 @@ class Action(object):
         pass
     def ID(self):
         pass
+    def as_dict(self):
+        pass
+    
 
+ACTION_DICT = {
+    
+}
+
+def action_factory(id, dic):
+    return ACTION_DICT[id](
+        **dic
+    )
 
 class Vote(discord.ui.View):
     def __init__(self, action: Action, count, threshold, message_id, id):
@@ -28,7 +39,9 @@ class Vote(discord.ui.View):
                 "a_v": [] ,
                 "count": self.count,
                 "threshold": self.threshold,
-                "action": action.ID()
+                "action": action.ID(),
+                "message_id": self.message_id,
+                "action_d": action.as_dict()
             }
 
     async def check(self):
@@ -59,7 +72,7 @@ def vote_factory(action: Action, count, threshold, message_id):
         async def yes(self, interaction: discord.Interaction, button: discord.ui.Button):
             msg = ""
             if self.can_vote(interaction.user.id):
-                msg = "sucessfully voted."
+                msg = "Sucessfully voted."
                 self.count+=1
                 await self.check()
             else:
@@ -84,3 +97,5 @@ def vote_factory(action: Action, count, threshold, message_id):
                     msg = "You have already voted."
             self.update(interaction.user.id)
             await interaction.response.send_message(msg, ephemeral=True)   
+
+    return Temp(action, count, threshold, message_id)
