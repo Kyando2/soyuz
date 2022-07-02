@@ -32,18 +32,27 @@ class Bot(commands.Bot):
 
 bot = Bot()
 
+## A LOT OF DIFFERENT VOTES TYPES:
+
+
+async def vote(text, interaction: discord.Interaction, id, **kwargs):
+    action = action_factory(id, **kwargs)
+    vote = vote_factory(action, 0, CONSTS.threshold, 0, bot)
+    vch = await channel(bot)
+    msg = await vch.send(text, view=vote)
+    vote.message_id = msg.id
+    vote.raw_update()
+    await interaction.response.send_message("Successfully created vote.")
+
 @bot.tree.command()
 @app_commands.describe(
     name="The name of the channel you want to create",
     category="The category you want to add the channel to",
 )
-async def create_channel(interaction: discord.Interaction, name: str, category: Optional[discord.CategoryChannel]):
-    action = action_factory(0, name=name, category=category)
-    vote = vote_factory(action, 0, CONSTS.threshold, 0, bot)
-    await interaction.response.send_message("Successfully created vote.")
-    vch = await channel(bot)
-    msg = await vch.send(f'Proposal to create a channel called { name }.', view=vote)
-    vote.message_id = msg.id
-    vote.update()
+async def create_text_channel(interaction: discord.Interaction, name: str, category: Optional[discord.CategoryChannel]):
+    await vote(f'Proposal to create a text channel called { name }.', interaction, 0, name=name, category=category)
+
+
+
 
 bot.run(token())

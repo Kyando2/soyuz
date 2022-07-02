@@ -33,7 +33,7 @@ class PermanentContext(object):
         self.__setattr__(name, value)
 
     def __getitem__(self, name):
-        self.__getattr__(name)
+        return self.__getattr__(name)
     
     def __contains__(self, other):
         return other in self.structure.keys()
