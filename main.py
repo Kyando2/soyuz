@@ -2,7 +2,7 @@ from typing import Optional
 
 from discord.ext import commands
 from discord import app_commands
-from lib.misc import token
+from lib.misc import token, channel
 from lib.permanent import PermanentJsonContext
 from lib.voting.system import vote_factory, action_factory
 from lib.consts import CONSTS
@@ -26,7 +26,7 @@ class Bot(commands.Bot):
         for k in pj.structure.keys():
             c = pj[k]
             action = action_factory(c["action"], **c["action_d"])
-            self.add_view(vote_factory(action, c["count"], c["threshold"], c["message_id"], k))
+            self.add_view(vote_factory(action, c["count"], c["threshold"], c["message_id"], bot, k))
         self.tree.copy_global_to(guild=MY_GUILD)
         await self.tree.sync(guild=MY_GUILD)
 
@@ -39,5 +39,11 @@ bot = Bot()
 )
 async def create_channel(interaction: discord.Interaction, name: str, category: Optional[discord.CategoryChannel]):
     action = action_factory(0, name=name, category=category)
+    vote = vote_factory(action, 0, CONSTS.threshold, 0, bot)
+    await interaction.response.send_message("Successfully created vote.")
+    vch = await channel(bot)
+    msg = await vch.send(f'Proposal to create a channel called { name }.', view=vote)
+    vote.message_id = msg.id
+    vote.update()
 
 bot.run(token())
