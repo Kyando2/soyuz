@@ -4,19 +4,11 @@ from discord.ext import commands
 import uuid
 
 from lib.permanent import PermanentJsonContext
-from lib.voting.actions.channel_actions import *
+from lib.voting.actions.channel_actions import CreateTextChannelAction
 from lib.consts import CONSTS
 from lib.misc import channel, guild
-
-class Action(object):
-    def __init__(self):
-        pass
-    async def run(self, bot: commands.Bot):
-        pass
-    def ID(self):
-        pass
-    def as_dict(self):
-        pass
+from discord.utils import MISSING
+from lib.voting.actions.action import Action
 
 ACTION_DICT = {
     0: CreateTextChannelAction
@@ -108,3 +100,13 @@ def vote_factory(action: Action, count, threshold, message_id, bot, id=None):
             await interaction.response.send_message(msg, ephemeral=True)   
 
     return Temp(action, count, threshold, bot, message_id)
+
+
+async def vote(bot: commands.Bot, interaction: discord.Interaction, id, **kwargs):
+    action = action_factory(id, **kwargs)
+    vote = vote_factory(action, 0, CONSTS.threshold, 0, bot)
+    vch = await channel(bot)
+    msg = await vch.send(action.message(), view=vote)
+    vote.message_id = msg.id
+    vote.raw_update()
+    await interaction.response.send_message("Successfully created vote.")
