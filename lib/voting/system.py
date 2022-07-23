@@ -125,4 +125,4 @@ async def vote(bot: commands.Bot, interaction: discord.Interaction, id, **kwargs
     msg = await vch.send(action.message(), view=vote)
     vote.message_id = msg.id
     vote.raw_update()
-    await interaction.response.send_message("Successfully created vote.")
+    await interaction.response.send_message("Successfully created vote.", ephemeral=True)
