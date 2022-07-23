@@ -33,7 +33,12 @@ class CreateTextChannelAction(Action):
         return f'Proposal to create a text channel called { self.name }.'
 
 def register_channel_actions(bot: commands.Bot, f):
-    @bot.tree.command()
+    channel_g = app_commands.Group(name="channel", description="actions related to channel")
+    create_g = app_commands.Group(name="create", description="create a channel", parent=channel_g)
+
+    @create_g.command(name="text")
     @app_commands.describe(name="The name of the channel you want to create", category="The category you want to add the channel to",)
     async def create_text_channel(interaction: discord.Interaction, name: str, category: Optional[discord.CategoryChannel], position: Optional[int]):
         await f(bot, interaction, 0, name=name, category_id=category.id if category != None else None, position=position)
+
+    bot.tree.add_command(channel_g)
