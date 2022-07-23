@@ -32,7 +32,7 @@ class Vote(discord.ui.View):
         pj = PermanentJsonContext("votes")
         if self.id not in pj:
             pj[self.id] = {
-                "a_v": [] ,
+                "a_v": {} ,
                 "count": self.count,
                 "threshold": self.threshold,
                 "action": action.ID(),
@@ -52,30 +52,46 @@ class Vote(discord.ui.View):
             self.can_vote = False
         
     async def pressed(self, value, id):
+        ov = value
         msg = ""
-        if self.can_votef(id):
+        value = self.can_votef(id, value)
+        print(value)
+        if value != 0:
             msg = "Sucessfully voted."
             self.count+=value
             await self.check()
+            self.updatev(id, value/abs(value))
         else:
             if self.can_vote == False:
                 msg = "This vote is over."
             else:
-                msg = "You have already voted."
-        self.update(id)
+                msg = f'You have already voted { "for" if ov > 0 else "against" }.'
+        self.update()
         return msg
 
-    def can_votef(self, id):
+    def can_votef(self, id, v):
         pj = PermanentJsonContext("votes")
         if not self.can_vote: return False
-        else: return not (id in pj[self.id]["a_v"])
+        print(pj[self.id]["a_v"])
+        if str(id) in pj[self.id]["a_v"].keys():
+            if v != int(pj[self.id]["a_v"][str(id)]):
+                return v*2
+            else:
+                return 0
+        else:
+            return v
 
-    def update(self, id):
+    def update(self):
         pj = PermanentJsonContext("votes")
         pj[self.id]["count"] = self.count
-        pj[self.id]["a_v"].append(id)
         pj[self.id]["message_id"] = self.message_id
         pj.update()
+    
+    def updatev(self, id, v):
+        pj = PermanentJsonContext("votes")
+        pj[self.id]["a_v"][id] = v
+        pj.update()
+
 
     def raw_update(self):
         pj = PermanentJsonContext("votes")
