@@ -69,7 +69,7 @@ def register_channel_actions(bot: commands.Bot, f):
     
     @delete_g.command(name="thread")
     @app_commands.describe(thread="The thread to delete")
-    async def delete_channel(interaction: discord.Interaction, thread: discord.Thread):
+    async def delete_thread(interaction: discord.Interaction, thread: discord.Thread):
         await f(bot, interaction, 1, channel_id=thread.id)
 
     bot.tree.add_command(channel_g)
