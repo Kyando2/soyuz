@@ -4,14 +4,15 @@ from discord.ext import commands
 import uuid
 
 from lib.permanent import PermanentJsonContext
-from lib.voting.actions.channel_actions import CreateTextChannelAction
+from lib.voting.actions.channel_actions import CreateTextChannelAction, DeleteChannelAction
 from lib.consts import CONSTS
 from lib.misc import channel, guild
 from discord.utils import MISSING
 from lib.voting.actions.action import Action
 
 ACTION_DICT = {
-    0: CreateTextChannelAction
+    0: CreateTextChannelAction,
+    1: DeleteChannelAction
 }
 
 def action_factory(id, **kwargs):
@@ -55,7 +56,6 @@ class Vote(discord.ui.View):
         ov = value
         msg = ""
         value = self.can_votef(id, value)
-        print(value)
         if value != 0:
             msg = "Sucessfully voted."
             self.count+=value
@@ -72,7 +72,6 @@ class Vote(discord.ui.View):
     def can_votef(self, id, v):
         pj = PermanentJsonContext("votes")
         if not self.can_vote: return False
-        print(pj[self.id]["a_v"])
         if str(id) in pj[self.id]["a_v"].keys():
             if v != int(pj[self.id]["a_v"][str(id)]):
                 return v*2
