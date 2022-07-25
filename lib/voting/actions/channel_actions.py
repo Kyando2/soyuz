@@ -22,13 +22,6 @@ class CreateTextChannelAction(Action):
     def ID(self):
         return 0
 
-    def as_dict(self):
-        return {
-            "name": self.name,
-            "category_id": self.category_id,
-            "position": self.position
-        }
-    
     def message(self):
         return f'Proposal to create a text channel called { self.name }.'
 
@@ -43,11 +36,6 @@ class DeleteChannelAction(Action):
     
     def ID(self):
         return 1
-    
-    def as_dict(self):
-        return {
-            "channel_id": self.channel_id
-        }
     
     def message(self):
         return f'Proposal to delete a text channel'

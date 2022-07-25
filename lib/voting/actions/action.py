@@ -5,11 +5,17 @@ class Action(object):
         for k, v in kwargs.items():
             j = v if v != None else None
             self.__setattr__(k, j)
+
+        self._dict = kwargs
+        
     async def run(self, bot: commands.Bot):
         pass
+
     def ID(self):
         pass
+
     def as_dict(self):
-        pass
+        return self._dict
+
     def msg(self):
         pass
