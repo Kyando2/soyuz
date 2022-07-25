@@ -33,7 +33,7 @@ class CreateTextChannelAction(Action):
         return f'Proposal to create a text channel called { self.name }.'
 
 def register_channel_actions(bot: commands.Bot, f):
-    channel_g = app_commands.Group(name="channel", description="actions related to channel")
+    channel_g = app_commands.Group(name="channel", description="actions related to channels")
     create_g = app_commands.Group(name="create", description="create a channel", parent=channel_g)
 
     @create_g.command(name="text")
