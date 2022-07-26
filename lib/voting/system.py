@@ -9,10 +9,12 @@ from lib.consts import CONSTS
 from lib.misc import channel, guild
 from discord.utils import MISSING
 from lib.voting.actions.action import Action
+from lib.voting.actions.message_actions import SendMessageAction
 
 ACTION_DICT = {
     0: CreateTextChannelAction,
-    1: DeleteChannelAction
+    1: DeleteChannelAction,
+    2: SendMessageAction
 }
 
 def action_factory(id, **kwargs):
@@ -36,7 +38,7 @@ class Vote(discord.ui.View):
                 "a_v": {} ,
                 "count": self.count,
                 "threshold": self.threshold,
-                "action": action.ID(),
+                "action": action.get_id(),
                 "message_id": self.message_id,
                 "action_d": action.as_dict()
             }
