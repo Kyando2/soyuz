@@ -1,13 +1,15 @@
 from discord.ext import commands
 from typing import Optional
 from lib.consts import CONSTS
-from lib.misc import guild, channel
+from lib.misc import guild
 from discord.utils import MISSING
 from discord import app_commands
 import discord
 from lib.voting.actions.action import Action
 
 class CreateTextChannelAction(Action):
+    ID = 0
+
     def __init__(self, name, category_id, position):
         super().__init__(name=name, category_id=category_id, position=position)
 
@@ -19,13 +21,12 @@ class CreateTextChannelAction(Action):
             ct = None
         await gu.create_text_channel(self.name, position=self.position if self.position!=None else MISSING, category=ct)
 
-    def ID(self):
-        return 0
-
     def message(self):
         return f'Proposal to create a text channel called { self.name }.'
 
 class DeleteChannelAction(Action):
+    ID = 1
+
     def __init__(self, channel_id):
         super().__init__(channel_id=channel_id)
     
@@ -33,9 +34,6 @@ class DeleteChannelAction(Action):
         gu = guild(bot)
         ct = await gu.fetch_channel(self.channel_id)
         await ct.delete()
-    
-    def ID(self):
-        return 1
     
     def message(self):
         return f'Proposal to delete a text channel'
@@ -53,7 +51,10 @@ def register_channel_actions(bot: commands.Bot, f):
     @delete_g.command(name="nonthread")
     @app_commands.describe(channel="The channel to delete")
     async def delete_channel(interaction: discord.Interaction, channel: discord.abc.GuildChannel):
-        await f(bot, interaction, 1, channel_id=channel.id)
+        if channel.id in CONSTS.notouch:
+            await interaction.response.send_message(f'You cannot delete <#{ channel.id }>.', ephemeral=True)
+        else:
+            await f(bot, interaction, 1, channel_id=channel.id)
     
     @delete_g.command(name="thread")
     @app_commands.describe(thread="The thread to delete")
