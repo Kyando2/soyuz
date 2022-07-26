@@ -1,7 +1,5 @@
 from discord.ext import commands
-from typing import Optional
 from lib.misc import guild
-from discord.utils import MISSING
 from discord import app_commands
 import discord
 from lib.voting.actions.action import Action

@@ -1,4 +1,3 @@
-from re import M
 import discord
 from discord.ext import commands
 import uuid
@@ -6,8 +5,7 @@ import uuid
 from lib.permanent import PermanentJsonContext
 from lib.voting.actions.channel_actions import CreateTextChannelAction, DeleteChannelAction
 from lib.consts import CONSTS
-from lib.misc import channel, guild
-from discord.utils import MISSING
+from lib.misc import channel
 from lib.voting.actions.action import Action
 from lib.voting.actions.message_actions import SendMessageAction
 
