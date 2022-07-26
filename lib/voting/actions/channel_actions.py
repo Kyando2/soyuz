@@ -10,8 +10,8 @@ from lib.voting.actions.action import Action
 class CreateTextChannelAction(Action):
     ID = 0
 
-    def __init__(self, name, category_id, position):
-        super().__init__(name=name, category_id=category_id, position=position)
+    def __init__(self, name, category_id, position, desc):
+        super().__init__(name=name, category_id=category_id, position=position, desc=desc)
 
     async def run(self, bot: commands.Bot):
         gu = guild(bot)
@@ -19,7 +19,7 @@ class CreateTextChannelAction(Action):
             ct = await gu.fetch_channel(self.category_id)
         else:
             ct = None
-        await gu.create_text_channel(self.name, position=self.position if self.position!=None else MISSING, category=ct)
+        await gu.create_text_channel(self.name, position=self.position if self.position!=None else MISSING, category=ct, topic=self.desc if self.desc!=None else MISSING)
 
     def message(self):
         return f'Proposal to create a text channel called { self.name }.'
@@ -45,8 +45,8 @@ def register_channel_actions(bot: commands.Bot, f):
 
     @create_g.command(name="text")
     @app_commands.describe(name="The name of the channel you want to create", category="The category you want to add the channel to",)
-    async def create_text_channel(interaction: discord.Interaction, name: str, category: Optional[discord.CategoryChannel], position: Optional[int]):
-        await f(bot, interaction, 0, name=name, category_id=category.id if category != None else None, position=position)
+    async def create_text_channel(interaction: discord.Interaction, name: str, category: Optional[discord.CategoryChannel], position: Optional[int], desc: Optional[str]):
+        await f(bot, interaction, 0, name=name, category_id=category.id if category != None else None, position=position, desc=desc)
     
     @delete_g.command(name="nonthread")
     @app_commands.describe(channel="The channel to delete")
