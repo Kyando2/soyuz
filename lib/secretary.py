@@ -1,5 +1,5 @@
 from discord.ext import commands
-from lib.misc import token
+from lib.misc import guild, token
 from lib.permanent import PermanentJsonContext
 from lib.voting.actions.vote import register_actions
 from lib.voting.system import vote_factory, action_factory, vote
@@ -20,6 +20,9 @@ class Secretary(commands.Bot):
     async def on_ready(self):
         print(f'Logged in as {self.user} (ID: {self.user.id})')
         print('------')
+        gu = guild(self)
+        ch = await gu.fetch_channel(970419838604439642)
+        await ch.send("Bot restarted.")
 
     async def setup_hook(self):
         pj = PermanentJsonContext("votes")
