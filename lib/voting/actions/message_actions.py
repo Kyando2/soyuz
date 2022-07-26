@@ -1,4 +1,5 @@
 from discord.ext import commands
+from lib.consts import CONSTS
 from lib.misc import guild
 from discord import app_commands
 import discord
@@ -24,7 +25,10 @@ def register_message_actions(bot: commands.Bot, f):
     @message_g.command(name="send")
     @app_commands.describe(channel="The name of the channel you want to send the message to", text="The message you want to send",)
     async def send_message(interaction: discord.Interaction, channel: discord.abc.GuildChannel, text: str):
-        await f(bot, interaction, 2, channel_id=channel.id, text=text)
+        if channel.id in CONSTS.notouch:
+            await interaction.response.send_message(f'You cannot send messages to <#{ channel.id }>.', ephemeral=True)
+        else:
+            await f(bot, interaction, 2, channel_id=channel.id, text=text)
 
 
     bot.tree.add_command(message_g)
