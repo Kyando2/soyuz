@@ -5,7 +5,7 @@ import uuid
 from lib.permanent import PermanentJsonContext
 from lib.voting.actions.channel_actions import CreateTextChannelAction, DeleteChannelAction, PurgeChannelAction
 from lib.consts import CONSTS
-from lib.misc import channel
+from lib.misc import channel, guild
 from lib.voting.actions.action import Action
 from lib.voting.actions.message_actions import DeleteMessageAction, SendMessageAction
 from lib.voting.actions.role_actions import CreateRoleAction, DeleteRoleAction, EditRoleAction
@@ -130,7 +130,8 @@ def vote_factory(action: Action, count, threshold, message_id, bot, id=None):
 
 async def vote(bot: commands.Bot, interaction: discord.Interaction, id, **kwargs):
     action = action_factory(id, **kwargs)
-    vote = vote_factory(action, 0, CONSTS.threshold, 0, bot)
+    gu = guild(bot)
+    vote = vote_factory(action, 0, max(int(gu.member_count/3), 1), 0, bot)
     vch = await channel(bot)
     x = discord.Embed(title="Vote", description=action.message(), type="rich", color=0xbf0606)
     msg = await vch.send(embed=x, view=vote)

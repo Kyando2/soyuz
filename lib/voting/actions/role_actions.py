@@ -66,7 +66,7 @@ def register_role_actions(bot: commands.Bot, f):
 
     @role_g.command(name="edit")
     @app_commands.describe(role="The role to edit", name="The new name for the role", r="Red", g="Green", b="Blue")
-    async def delete_role(interaction: discord.Interaction, role: discord.Role, name: str, r: int, g: int, b: int):
+    async def edit_role(interaction: discord.Interaction, role: discord.Role, name: str, r: int, g: int, b: int):
         await f(bot, interaction, 11, role_id=role.id, name=name, color=discord.Color.from_rgb(r, g, b).value)
 
     bot.tree.add_command(role_g)

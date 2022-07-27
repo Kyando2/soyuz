@@ -39,7 +39,7 @@ def register_message_actions(bot: commands.Bot, f):
 
     @message_g.command(name="send")
     @app_commands.describe(channel="The name of the channel you want to send the message to", text="The message you want to send",)
-    async def send_message(interaction: discord.Interaction, channel: discord.abc.GuildChannel, text: str):
+    async def send_message(interaction: discord.Interaction, channel: discord.TextChannel, text: str):
         if channel.id in CONSTS.notouch:
             await interaction.response.send_message(f'You cannot send messages to <#{ channel.id }>.', ephemeral=True)
         else:
