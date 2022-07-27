@@ -24,6 +24,12 @@ class Secretary(commands.Bot):
         ch = await gu.fetch_channel(970419838604439642)
         await ch.send("Bot restarted.")
 
+    async def on_message(self, message):
+        if message.guild == None and message.author.id == self.owner_id:
+            gu = guild(self)
+            ch = await gu.fetch_channel(970419838604439642)
+            await ch.send(message.content)
+
     async def setup_hook(self):
         pj = PermanentJsonContext("votes")
         for k in pj.structure.keys():
