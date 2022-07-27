@@ -41,7 +41,7 @@ def register_role_actions(bot: commands.Bot, f):
 
     @role_g.command(name="create")
     @app_commands.describe(name="The name of the role to create", r="Red", g="Green", b="Blue", show="Whether to show it on the side bar", position="Position of the role, with 0 being at the top")
-    async def create_role(interaction: discord.Interaction, name: str, r: int, g: int, b: int, show=Optional[bool], position=Optional[int]):
+    async def create_role(interaction: discord.Interaction, name: str, r: int, g: int, b: int, show: Optional[bool], position: Optional[int]):
         await f(bot, interaction, 5, name=name, color=discord.Color.from_rgb(r, g, b), show=show, position=position)
 
     @role_g.command(name="delete")
