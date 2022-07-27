@@ -3,7 +3,7 @@ from discord.ext import commands
 import uuid
 
 from lib.permanent import PermanentJsonContext
-from lib.voting.actions.channel_actions import CreateTextChannelAction, DeleteChannelAction
+from lib.voting.actions.channel_actions import CreateTextChannelAction, DeleteChannelAction, PurgeChannelAction
 from lib.consts import CONSTS
 from lib.misc import channel
 from lib.voting.actions.action import Action
@@ -13,7 +13,8 @@ ACTION_DICT = {
     0: CreateTextChannelAction,
     1: DeleteChannelAction,
     2: SendMessageAction,
-    3: DeleteMessageAction
+    3: DeleteMessageAction,
+    4: PurgeChannelAction
 }
 
 def action_factory(id, **kwargs):

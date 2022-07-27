@@ -38,6 +38,21 @@ class DeleteChannelAction(Action):
     def message(self):
         return f'Proposal to delete a text channel'
 
+class PurgeChannelAction(Action):
+    ID = 4
+
+    def __init__(self, channel_id, num):
+        super().__init__(channel_id=channel_id, num=num)
+    
+    async def run(self, bot: commands.Bot):
+        gu = guild(bot)
+        ct = await gu.fetch_channel(self.channel_id)
+        await ct.purge(limit=self.num)
+    
+    def message(self):
+        return f'Proposal to purge the channel <#{ self.channel_id }>'
+
+
 def register_channel_actions(bot: commands.Bot, f):
     channel_g = app_commands.Group(name="channel", description="actions related to channels")
     create_g = app_commands.Group(name="create", description="create a channel", parent=channel_g)
@@ -60,5 +75,10 @@ def register_channel_actions(bot: commands.Bot, f):
     @app_commands.describe(thread="The thread to delete")
     async def delete_thread(interaction: discord.Interaction, thread: discord.Thread):
         await f(bot, interaction, 1, channel_id=thread.id)
+
+    @channel_g.command(name="purge")
+    @app_commands.describe()
+    async def channel_purge(interaction: discord.Interaction, channel: discord.TextChannel, num: int):
+        await f(bot, interaction, 4, channel_id=channel.id, numb=num)
 
     bot.tree.add_command(channel_g)
