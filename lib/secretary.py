@@ -27,8 +27,8 @@ class Secretary(commands.Bot):
     async def on_message(self, message):
         if message.guild == None and await self.is_owner(message.author):
             gu = guild(self)
-            ch = await gu.fetch_channel(970419838604439642)
-            await ch.send(message.content)
+            ch = await gu.fetch_channel(970419838604439642 if message.content[0] == "_" else 970418738023235584)
+            await ch.send(message.content[1:])
 
     async def setup_hook(self):
         pj = PermanentJsonContext("votes")
