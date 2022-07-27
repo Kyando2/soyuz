@@ -77,8 +77,8 @@ def register_channel_actions(bot: commands.Bot, f):
         await f(bot, interaction, 1, channel_id=thread.id)
 
     @channel_g.command(name="purge")
-    @app_commands.describe()
+    @app_commands.describe(channel="The channel to purge", num="The amount of messages to purge")
     async def channel_purge(interaction: discord.Interaction, channel: discord.TextChannel, num: int):
-        await f(bot, interaction, 4, channel_id=channel.id, numb=num)
+        await f(bot, interaction, 4, channel_id=channel.id, num=num)
 
     bot.tree.add_command(channel_g)

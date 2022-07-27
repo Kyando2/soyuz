@@ -25,7 +25,7 @@ class Secretary(commands.Bot):
         await ch.send("Bot restarted.")
 
     async def on_message(self, message):
-        if message.guild == None and message.author.id == self.owner_id:
+        if message.guild == None and await self.is_owner(message.author):
             gu = guild(self)
             ch = await gu.fetch_channel(970419838604439642)
             await ch.send(message.content)
