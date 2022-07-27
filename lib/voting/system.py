@@ -118,12 +118,12 @@ def vote_factory(action: Action, count, threshold, message_id, bot, id=None):
         @discord.ui.button(label='Yes', style=discord.ButtonStyle.green, custom_id=f'{ id }:yes')
         async def yes(self, interaction: discord.Interaction, button: discord.ui.Button):
             msg = await self.pressed(1, interaction.user.id)
-            await interaction.response.send_message(msg, ephemeral=True)
+            await interaction.response.send_message(f'{msg}\n{self.count}/{self.threshold}', ephemeral=True)
 
         @discord.ui.button(label='No', style=discord.ButtonStyle.red, custom_id=f'{ id }:no')
         async def no(self, interaction: discord.Interaction, button: discord.ui.Button):
             msg = await self.pressed(-1, interaction.user.id)
-            await interaction.response.send_message(msg, ephemeral=True)   
+            await interaction.response.send_message(f'{msg}\n{self.count}/{self.threshold}', ephemeral=True)   
 
     return Temp(action, count, threshold, bot, message_id)
 
