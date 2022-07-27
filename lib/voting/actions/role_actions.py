@@ -23,6 +23,19 @@ class CreateRoleAction(Action):
     def message(self):
         return f'Proposal to create a role called { self.name }.'
 
+class DeleteRoleAction(Action):
+    ID = 6
+
+    def __init__(self, role_id):
+        super().__init__(role_id=role_id)
+
+    async def run(self, bot: commands.Bot):
+        gu = guild(bot)
+        r = gu.get_role(self.role_id)
+
+    def message(self):
+        return f'Proposal to create a role called { self.name }.'
+
 def register_role_actions(bot: commands.Bot, f):
     role_g = app_commands.Group(name="role", description="actions related to roles")
 
@@ -30,3 +43,8 @@ def register_role_actions(bot: commands.Bot, f):
     @app_commands.describe(name="The name of the role to create", r="Red", g="Green", b="Blue", show="Whether to show it on the side bar", position="Position of the role, with 0 being at the top")
     async def create_role(interaction: discord.Interaction, name: str, r: int, g: int, b: int, show=Optional[bool], position=Optional[int]):
         await f(bot, interaction, 5, name=name, color=discord.Color.from_rgb(r, g, b), show=show, position=position)
+
+    @role_g.command(name="delete")
+    @app_commands.describe(role="The role to delete")
+    async def delete_role(interaction: discord.Interaction, role: discord.Role):
+        await f(bot, interaction, 6, role_id=role.id)
