@@ -7,12 +7,13 @@ from lib.voting.actions.channel_actions import CreateTextChannelAction, DeleteCh
 from lib.consts import CONSTS
 from lib.misc import channel
 from lib.voting.actions.action import Action
-from lib.voting.actions.message_actions import SendMessageAction
+from lib.voting.actions.message_actions import DeleteMessageAction, SendMessageAction
 
 ACTION_DICT = {
     0: CreateTextChannelAction,
     1: DeleteChannelAction,
-    2: SendMessageAction
+    2: SendMessageAction,
+    3: DeleteMessageAction
 }
 
 def action_factory(id, **kwargs):

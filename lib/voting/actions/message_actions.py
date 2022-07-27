@@ -20,7 +20,7 @@ class SendMessageAction(Action):
         return f'Proposal to send the message `"{ self.text }"` to channel the <#{ self.channel_id }>.'
 
 class DeleteMessageAction(Action):
-    ID = 1
+    ID = 3
 
     def __init__(self, channel_id, message_id):
         super().__init__(channel_id=channel_id, message_id=message_id)
@@ -45,13 +45,13 @@ def register_message_actions(bot: commands.Bot, f):
         else:
             await f(bot, interaction, 2, channel_id=channel.id, text=text)
     
-    @message_g.command(name="nonthread")
+    @message_g.command(name="delete")
     @app_commands.describe(channel="The channel in which the message is", message_id="The message to delete")
-    async def delete_channel(interaction: discord.Interaction, channel: discord.abc.GuildChannel, message_id: str):
+    async def delete_message(interaction: discord.Interaction, channel: discord.abc.GuildChannel, message_id: str):
         if channel.id in CONSTS.notouch:
             await interaction.response.send_message(f'You cannot delete a message in <#{ channel.id }>.', ephemeral=True)
         else:
-            await f(bot, interaction, 1, channel_id=channel.id, message_id=message_id)
+            await f(bot, interaction, 3, channel_id=channel.id, message_id=message_id)
 
 
     bot.tree.add_command(message_g)
