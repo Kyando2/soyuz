@@ -21,11 +21,11 @@ class SomeAction(Action):
         return f'My cool message!'
 
 def register_template_actions(bot: commands.Bot, f):
-    template_g = app_commands.Group(name="template", description="template you should not see this")
+    template_g = app_commands.Group(name="template", description="template")
 
-    @template_g.command(name="edit")
-    @app_commands.describe(role="The role to edit", name="The new name for the role", r="Red", g="Green", b="Blue")
-    async def template(interaction: discord.Interaction, role: discord.Role, a: int, b: int, c: int):
+    @template_g.command(name="template")
+    @app_commands.describe(a="template", b="template", c="template")
+    async def template(interaction: discord.Interaction, a: int, b: int, c: int):
         await f(bot, interaction, -1, a=a, b=b, c=c)
 
     bot.tree.add_command(template)
