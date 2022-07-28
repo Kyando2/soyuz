@@ -57,6 +57,7 @@ class EditRoleAction(Action):
 
 def register_role_actions(bot: commands.Bot, f):
     role_g = app_commands.Group(name="role", description="actions related to roles")
+    view_g = app_commands.Group(name="view", description="actions relating to viewing roles", parent=role_g)
 
     @role_g.command(name="create")
     @app_commands.describe(name="The name of the role to create", r="Red", g="Green", b="Blue", show="Whether to show it on the side bar", position="Position of the role, with 0 being at the top")
@@ -72,5 +73,10 @@ def register_role_actions(bot: commands.Bot, f):
     @app_commands.describe(role="The role to edit", name="The new name for the role", r="Red", g="Green", b="Blue")
     async def edit_role(interaction: discord.Interaction, role: discord.Role, name: str, r: int, g: int, b: int):
         await f(bot, interaction, 11, role_id=role.id, name=name, color=discord.Color.from_rgb(r, g, b).value)
+
+    @view_g.command(name="all")
+    async def role_view_all(interaction: discord.Interaction):
+        gu = guild(bot)
+        await interaction.response.send_message('\n'.join([f'{r.name} : {r.id}' for r in await gu.fetch_roles()]))
 
     bot.tree.add_command(role_g)

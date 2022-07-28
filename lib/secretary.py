@@ -23,6 +23,9 @@ class Secretary(commands.Bot):
         gu = guild(self)
         ch = await gu.fetch_channel(970419838604439642)
         await ch.send("Bot restarted.")
+        ch = await gu.fetch_channel(970418738023235584)
+        with open("changelog.txt", 'r') as f:
+            await ch.send(f.read())
 
     async def on_message(self, message):
         if message.guild == None and await self.is_owner(message.author):
