@@ -6,6 +6,7 @@ from discord import app_commands
 import discord
 from lib.voting.actions.action import Action
 from lib.voting.system import ACTION_DICT
+
 @ACTION_DICT.register()
 class CreateRoleAction(Action):
     ID = 5
