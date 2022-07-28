@@ -5,7 +5,8 @@ from lib.misc import guild
 from discord import app_commands
 import discord
 from lib.voting.actions.action import Action
-
+from lib.voting.system import ACTION_DICT
+@ACTION_DICT.register()
 class CreateRoleAction(Action):
     ID = 5
 
@@ -23,6 +24,7 @@ class CreateRoleAction(Action):
     def message(self):
         return f'Proposal to create a role called { self.name }.'
 
+@ACTION_DICT.register()
 class DeleteRoleAction(Action):
     ID = 6
 
@@ -37,6 +39,7 @@ class DeleteRoleAction(Action):
     def message(self):
         return f'Proposal to delete role <@&{ self.role_id }>.'
 
+@ACTION_DICT.register()
 class EditRoleAction(Action):
     ID = 11
 

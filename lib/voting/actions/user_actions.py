@@ -6,7 +6,8 @@ from lib.misc import guild
 from discord import app_commands
 import discord
 from lib.voting.actions.action import Action
-
+from lib.voting.system import ACTION_DICT
+@ACTION_DICT.register()
 class UserAddRoleAction(Action):
     ID = 7
 
@@ -21,6 +22,7 @@ class UserAddRoleAction(Action):
     def message(self):
         return f'Proposal to add role <@&{ self.role_id }> to user <@{ self.user_id }>.'
 
+@ACTION_DICT.register()
 class UserModKickAction(Action):
     ID = 8
 
@@ -36,6 +38,7 @@ class UserModKickAction(Action):
         return f'Proposal to kick user <@{ self.user_id }>.'
 
     
+@ACTION_DICT.register()
 class UserModBanAction(Action):
     ID = 9
 
@@ -51,6 +54,7 @@ class UserModBanAction(Action):
         return f'Proposal to ban user <@{ self.user_id }>.'
 
 
+@ACTION_DICT.register()
 class UserModTimeoutAction(Action):
     ID = 10
 

@@ -4,7 +4,9 @@ from lib.misc import guild
 from discord import app_commands
 import discord
 from lib.voting.actions.action import Action
+from lib.voting.system import ACTION_DICT
 
+@ACTION_DICT.register()
 class SendMessageAction(Action):
     ID = 2
 
@@ -17,8 +19,9 @@ class SendMessageAction(Action):
         await ch.send(self.text)
 
     def message(self):
-        return f'Proposal to send the message `"{ self.text }"` to channel the <#{ self.channel_id }>.'
+        return f'Proposal to send `"{ self.text }"` to channel <#{ self.channel_id }>.'
 
+@ACTION_DICT.register()
 class DeleteMessageAction(Action):
     ID = 3
 

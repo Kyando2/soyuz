@@ -3,31 +3,34 @@ from discord.ext import commands
 import uuid
 
 from lib.permanent import PermanentJsonContext
-from lib.voting.actions.channel_actions import CreateTextChannelAction, DeleteChannelAction, PurgeChannelAction
 from lib.consts import CONSTS
 from lib.misc import channel, guild
 from lib.voting.actions.action import Action
-from lib.voting.actions.message_actions import DeleteMessageAction, SendMessageAction
-from lib.voting.actions.role_actions import CreateRoleAction, DeleteRoleAction, EditRoleAction
-from lib.voting.actions.user_actions import UserAddRoleAction, UserModBanAction, UserModKickAction, UserModTimeoutAction
 
-ACTION_DICT = {
-    0: CreateTextChannelAction,
-    1: DeleteChannelAction,
-    2: SendMessageAction,
-    3: DeleteMessageAction,
-    4: PurgeChannelAction,
-    5: CreateRoleAction,
-    6: DeleteRoleAction,
-    7: UserAddRoleAction,
-    8: UserModKickAction,
-    9: UserModBanAction,
-    10: UserModTimeoutAction,
-    11: EditRoleAction
-}
+
+class ActionTable:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(ActionTable, cls).__new__(cls)
+        return cls._instance
+    
+    def __init__(self):
+        if not hasattr(self, "_dict"):
+            self._dict = {}
+
+    def register(self):           
+        
+        def wrapped(cls):
+            self._dict[cls.ID] = cls
+
+        return wrapped
+
+ACTION_DICT = ActionTable()
 
 def action_factory(id, **kwargs):
-    return ACTION_DICT[id](
+    return ACTION_DICT._dict[id](
         **kwargs
     )
 

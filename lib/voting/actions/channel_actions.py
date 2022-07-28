@@ -6,7 +6,8 @@ from discord.utils import MISSING
 from discord import app_commands
 import discord
 from lib.voting.actions.action import Action
-
+from lib.voting.system import ACTION_DICT
+@ACTION_DICT.register()
 class CreateTextChannelAction(Action):
     ID = 0
 
@@ -24,6 +25,7 @@ class CreateTextChannelAction(Action):
     def message(self):
         return f'Proposal to create a text channel called { self.name }.'
 
+@ACTION_DICT.register()
 class DeleteChannelAction(Action):
     ID = 1
 
@@ -38,6 +40,7 @@ class DeleteChannelAction(Action):
     def message(self):
         return f'Proposal to delete a text channel'
 
+@ACTION_DICT.register()
 class PurgeChannelAction(Action):
     ID = 4
 
