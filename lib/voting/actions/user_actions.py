@@ -69,6 +69,21 @@ class UserModTimeoutAction(Action):
     def message(self):
         return f'Proposal to timeout user <@{ self.user_id }> for { self.dt } minutes.'
 
+@ACTION_DICT.register()
+class UserAddRoleAction(Action):
+    ID = 15
+
+    def __init__(self, user_id, role_id):
+        super().__init__(user_id=user_id, role_id=role_id)
+
+    async def run(self, bot: commands.Bot):
+        gu = guild(bot)
+        u = await gu.fetch_member(self.user_id)
+        await u.remove_roles(discord.Object(self.role_id))
+
+    def message(self):
+        return f'Proposal to remove role <@&{ self.role_id }> from user <@{ self.user_id }>.'
+
 def register_user_actions(bot: commands.Bot, f):
     user_g = app_commands.Group(name="user", description="actions related to users")
     role_g = app_commands.Group(name="role", description="actions related to roles", parent=user_g)
@@ -93,5 +108,10 @@ def register_user_actions(bot: commands.Bot, f):
     @app_commands.describe(user="The user to timeout", time="The amount of time to timeout")
     async def user_mod_timeout(interaction: discord.Interaction, user: discord.Member, time: int):
         await f(bot, interaction, 10, user_id=user.id, dt=time)
+
+    @role_g.command(name="remove")
+    @app_commands.describe(user="The user to remove the role from", role="The role to remove from that user")
+    async def user_remove_role(interaction: discord.Interaction, user: discord.Member, role: discord.Role):
+        await f(bot, interaction, 15, user_id=user.id, role_id=role.id)
 
     bot.tree.add_command(user_g)
