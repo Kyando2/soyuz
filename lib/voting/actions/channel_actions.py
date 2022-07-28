@@ -150,6 +150,9 @@ def register_channel_actions(bot: commands.Bot, f):
     @channel_g.command(name="purge")
     @app_commands.describe(channel="The channel to purge", num="The amount of messages to purge")
     async def channel_purge(interaction: discord.Interaction, channel: discord.TextChannel, num: int):
-        await f(bot, interaction, 4, channel_id=channel.id, num=num)
+        if channel.id in CONSTS.notouch:
+            await interaction.response.send_message(f'You cannot purge messages in <#{ channel.id }>.', ephemeral=True)
+        else:
+            await f(bot, interaction, 4, channel_id=channel.id, num=num)
 
     bot.tree.add_command(channel_g)
