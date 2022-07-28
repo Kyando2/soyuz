@@ -134,7 +134,7 @@ def vote_factory(action: Action, count, threshold, message_id, bot, id=None):
 async def vote(bot: commands.Bot, interaction: discord.Interaction, id, **kwargs):
     action = action_factory(id, **kwargs)
     gu = guild(bot)
-    vote = vote_factory(action, 0, min(int(gu.member_count/3), 1), 0, bot)
+    vote = vote_factory(action, 0, max(int(gu.member_count/3), 1), 0, bot)
     vch = await channel(bot)
     x = discord.Embed(title="Vote", description=action.message(), type="rich", color=0xbf0606)
     msg = await vch.send(embed=x, view=vote)

@@ -1,6 +1,4 @@
-__**Version 0.3.0**__
-New in 0.0.3:
-Added Changelog.
-Minor bugs fixed.
-Added Perms Channel Block_Role Action.
-Added command to view a list of existing roles.
+__**Version 0.3.1**__
+New in 0.3.1:
+Fix wrong message.
+Fix wrong vote threshold.

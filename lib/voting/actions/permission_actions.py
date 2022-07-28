@@ -21,7 +21,7 @@ class PermsChannelBlockRole(Action):
         await ch.edit(overwrites={r: discord.PermissionOverwrite(send_messages=False)})
 
     def message(self):
-        return f'Proposition to block role <@&{ self.role_id }> from seeing channel <#{ self.channel_id }>'
+        return f'Proposition to block role <@&{ self.role_id }> from typing in channel <#{ self.channel_id }>'
 
 def register_permission_actions(bot: commands.Bot, f):
     perms_g = app_commands.Group(name="perms", description="actions related to perms")
