@@ -105,7 +105,6 @@ class Vote(discord.ui.View):
         pj[self.id]["a_v"][id] = v
         pj.update()
 
-
     def raw_update(self):
         pj = PermanentJsonContext("votes")
         pj[self.id]["count"] = self.count
